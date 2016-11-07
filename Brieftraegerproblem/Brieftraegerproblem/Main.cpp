@@ -5,7 +5,7 @@ Website: www.github.com/s0t7x
 
 Git: www.github.com/s0t7x/Brieftraegerproblem
 
-Version: 0.1
+Version: 0.2
 */
 #include <iostream>
 #include <list>
@@ -22,15 +22,15 @@ private:
 
 	int P = NULL;			//Anzahl der Knotenpunkte
 	list<int> *mat;	//Dynamischer Array für die Adjazenzmatrix
-	vector<bool> besucht(bool);
 
 public:
 
 	//Der Graph besteht aus einer Menge Knoten P(Knotenpunkte) und einer Menge ungerichteter Kanten K: G = (P, K)
 	//nP sei hierber die Anzahl der Knoten P
 	Graph(int nP) {
-		P = nP;
+		this->P = nP;
 		mat = new list<int>[P];
+	
 	}
 
 	//Destructor zur Speicherreinigung
@@ -44,10 +44,10 @@ public:
 	}
 
 	//Tiefensuche
-	void Tiefensuche(int P, vector<bool> besucht)
+	void Tiefensuche(int P, bool besucht[])
 	{
 		//Den aktuellen Knoten als besucht makieren
-		besucht.at(P) = false;
+		besucht[P] = false;
 
 		//Für alle Knoten in mat[p] wiederholen
 		list<int>::iterator i;
@@ -58,10 +58,12 @@ public:
 
 	bool Zusammenhang() {
 		int i = 0;
+		bool besucht[20];
 		//Test
 		//Markiere all Knoten als nicht besucht
 		
-		//besucht.clear();
+		for (i = 0; i < P; i++)
+			besucht[i] = false;
 
 		//Finde einen Knoten mit Grad ungleich 0
 		for (i = 0; i < P; i++)
@@ -83,4 +85,34 @@ public:
 		return true;
 	}
 
+	int Eulersch()
+	{
+		//Prüfen ob alle Knoten verbunden sind
+		if (Zusammenhang() == false)
+			return 0;
+
+		//Zähle Knoten mit ungeradem Grad
+		int odd = 0;
+		for (int i = 0; i < P; i++)
+			if (mat[i].size() & 1)
+				odd++;
+
+		//Exisstieren Knoten mit ungeradem Grad, so ist der Graph nicht Eulersch
+		return (odd) ? 1 : 0;
+	}
+
 };
+
+int main()
+{
+	Graph g1(5);
+	g1.neueKante(1, 0);
+	g1.neueKante(0, 2);
+	g1.neueKante(2, 1);
+	g1.neueKante(0, 3);
+	g1.neueKante(3, 4);
+	cout << "Result for Graph 1: ";
+	g1.Eulersch();
+
+	return 0;
+}
