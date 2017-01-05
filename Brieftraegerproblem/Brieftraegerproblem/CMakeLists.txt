@@ -1,3 +1,11 @@
-cmake_minimum_required (VERSION 2.6)
-project (main)
-add_executable(main main.cpp)
+message(STATUS "Building tests")
+
+set(target brieftraegerproblem_tests)
+message(STATUS "Building application ${target}")
+
+set(sources
+	main.cpp
+)
+
+add_executable(${target} ${sources})
+add_test(all "${EXECUTABLE_OUTPUT_PATH}/${target}")
