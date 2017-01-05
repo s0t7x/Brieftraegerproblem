@@ -4,7 +4,7 @@ set(target brieftraegerproblem_tests)
 message(STATUS "Building application ${target}")
 
 set(sources
-	main.cpp
+	main
 )
 
 add_executable(${target} ${sources})
